@@ -1,5 +1,5 @@
 
-async function signin(e){
+async function signIn(e){
   try{
    e.preventDefault();
 
@@ -8,10 +8,10 @@ async function signin(e){
       password:e.target.password.value,
    };
 
-let response = await axios.post('http://localhost:3000/user/signin', loginDetails);
+let response = await axios.post('http://localhost:3000/user/signIn', loginDetails);
         alert(response.data.message);
         localStorage.setItem('token' , response.data.token);
-        if(response.status === 200){
+        if(response.data.success === true ){
             window.location.href = '../Expense/expense.html';
         }else{
             throw new Error('Login is failed')
