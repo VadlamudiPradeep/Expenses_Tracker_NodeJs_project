@@ -1,4 +1,7 @@
 let User = require('../models/user');
+let bcrypt = require('bcrypt');
+//let md5 = require('md5');
+
 
 function isstringValid(string){
     if(string == undefined || string.length === 0){
@@ -10,15 +13,22 @@ function isstringValid(string){
 
 let signup =async (req ,res)=>{
     try{
+
     let {name , email , phone , password} = req.body ;
        console.log('name:' + name , 'email :' +email , 'phone :' +phone , 'password :' +password);
     if(isstringValid(name) || isstringValid(email) || isstringValid(phone) || isstringValid(password)){
-        return res.status(400).json({err : 'something is missing' , success: false})
+        
+        res.status(400).json({err : 'something is missing' , success: false})
     }
-    User.create({name , email , phone , password})
-    .then((response)=>{
+    var salt = await bcrypt.genSalt(10); ;
+
+bcrypt.hash(password , salt ,async(err,hash)=>{
+         User.create({name , email , phone , password:hash })
+    
         res.status(201).json({success : true ,message:'successfully create new User'});
+
     })
+
 }
 catch(err){
         res.status(500).json({error: err, success: false})
@@ -27,25 +37,34 @@ catch(err){
 
 let signIn = async(req ,res)=>{
     try{
-    let {email , password} = req.body;
-    console.log('email' + email , 'password :' +password)
-   if(isstringValid(email) || isstringValid(password)){
-    return res.status(400).json({message:'Email or Password is wrong or missing' , success:false});
-   }
-   let userResponse = await User.findAll({where : {email , password}})
-      if(userResponse.length > 0){
-        if(userResponse[0].password === password){
-            res.status(200).json({success: true , message:'user sing In is successfully'});
-        }else{
-            return res.status(401).json({success  : false , message:'Password is  incorrect'});
+        const { email, password } = req.body;
+        if(isstringValid(email) || isstringValid(password)){
+            return res.status(400).json({message: 'EMail idor password is missing ', success: false})
         }
-      }else{
-        return res.status(404).json({success : false , message:'User not exists '})
-      }
-}catch(err){
-    res.status(500).json({success:false , message:err})
+        console.log(password);
+        const user  = await User.findAll({ where : { email }})
+      
+            if(user.length > 0){
+               bcrypt.compare(password, user[0].password, (err, result) => {
+               if(err){
+                throw new Error('Something went wrong')
+               }
+                if(result === true){
+                    return res.status(200).json({success: true, message: "User logged in successfully"})
+                }
+                else{
+                return res.status(401).json({success: false, message: 'Password is incorrect'})
+               }
+            })
+            } else {
+                return res.status(404).json({success: false, message: 'User Does not exist'})
+            }
+        }catch(err){
+            res.status(500).json({message: err, success: false})
+        }
 }
-}
+
+
 
 module.exports = {
     signup,
