@@ -26,7 +26,7 @@ body{
     left:-50px;
     width:380px;
     height:420px;
-    background: linear-gradient(5deg , transparent,
+    background: linear-gradient(0deg , transparent,
     #a71125 ,#a71125 );
     transform-origin:bottom right;
     animation: animate 6s linear infinite;
@@ -38,7 +38,7 @@ body{
     left:-50px;
     width:380px;
     height:420px;
-    background: linear-gradient(5deg , transparent,
+    background: linear-gradient(0deg , transparent,
     #a71125,#a71125 );
     transform-origin:bottom right;
     animation: animate 6s linear infinite;
@@ -90,7 +90,7 @@ button:focus {
 	outline: none;
 }
 
-button {
+button{
 	background-color: transparent;
 	border-color: #FFFFFF;
 }
