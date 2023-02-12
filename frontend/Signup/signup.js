@@ -2,27 +2,6 @@
 async function signup(e){
     try{
         e.preventDefault();
-
-        let name = document.getElementById('name');
-        let email = document.getElementById('email');
-        let phone = document.getElementById('phone');
-        let password = document.getElementById('password');
-    
-        if(name.length<3 || !isNaN(name) || name==" "){
-            alert('Enter valid name');
-            return;
-        }
-        else if(email.length<5 ) {
-            alert('Enter valid email');
-            return;
-        }else if(phone.length <10 || phone == ''){
-            alert('Enter valid phone number');
-            return;
-        }else if(password.length < 4){
-            alert('Enter valid password');
-            return;
-           
-        }
     
         let signupDetails ={
             name:e.target.name.value,
@@ -30,6 +9,17 @@ async function signup(e){
             phone:e.target.phone.value,
             password:e.target.password.value
         };
+      if(signupDetails.name.length < 4 || signupDetails.name === ''){
+        alert('Enter a valid name');
+        return ;
+      }else if(signupDetails.email === ''){
+        alert('Enter a valid email');
+        return ;
+      }else if(signupDetails.phone.length < 10 || signupDetails.password.length < 8){
+        alert('Enter a valid email');
+        return ;
+      }
+
         
      let response  = await axios.post('http://localhost:3000/user/signup', signupDetails)
        if(response.data[1] === false){

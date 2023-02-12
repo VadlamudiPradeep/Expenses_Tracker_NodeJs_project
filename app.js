@@ -9,12 +9,16 @@ app.use(cors());
 // app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 
+//models
+
+
 //routes
 let userRoutes = require('./routes/userRoutes');
-
+let expensesRoutes =  require('./routes/expensesRoutes');
 
 
 app.use('/user', userRoutes);
+app.use('/expenses' , expensesRoutes);
 
 let sequelize = require('./util/database');
 
