@@ -224,13 +224,6 @@ label {
   transition: opacity 0.3s ease;
 }
 
-#logout{
-  font-size: 2rem;
-  position: absolute;
-  right: 30px;
-  top: 30px;
-  cursor: pointer;
-}
 
 #premium{
   min-width: 150px;
