@@ -1,5 +1,5 @@
 
-
+let token = localStorage.getItem('token');
 async function saveToDB(e){
     try{ 
         e.preventDefault();
@@ -16,7 +16,7 @@ if(expensesDetails.expenses ==='' || expensesDetails.expenses.length < 4){
     alert('Enter a valid desc or cate');
     return;
 }
-let response = await axios.post('http://localhost:3000/expenses/addExpenses', expensesDetails)
+let response = await axios.post('http://localhost:3000/expenses/addExpenses', expensesDetails ,{headers:{Authorization:token}})
           alert(response.data.message);
          showUserOnScreen(response.data.expense)
     }
@@ -30,7 +30,7 @@ let response = await axios.post('http://localhost:3000/expenses/addExpenses', ex
 
 window.addEventListener('DOMContentLoaded', async () => {
     try{
-       let response = await axios.get('http://localhost:3000/expenses/getExpenses')
+       let response = await axios.get('http://localhost:3000/expenses/getExpenses',{headers:{Authorization:token}} )
             response.data.expenses.forEach(expense => {
                 showUserOnScreen(expense);
             })
@@ -68,7 +68,7 @@ function deleteExpense(e, expenseid) {
         const token = localStorage.getItem('token');
     
 
-    axios.delete(`http://localhost:3000/expenses/deleteExpense/${expenseid}`).then((response) => {
+    axios.delete(`http://localhost:3000/expenses/deleteExpense/${expenseid}` ,{headers:{Authorization:token}}).then((response) => {
         removeExpensefromUI(expenseid)
         alert(response.data.message)
     })

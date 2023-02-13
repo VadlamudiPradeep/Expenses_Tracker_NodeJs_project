@@ -1,5 +1,6 @@
 let User = require('../models/user');
 let bcrypt = require('bcrypt');
+let jwt = require('jsonwebtoken');
 //let md5 = require('md5');
 
 
@@ -11,6 +12,9 @@ function isstringValid(string){
     }
 }
 
+function GenerateAccessToken(id){
+    return jwt.sign({userId : id}, 'secretkey')
+}
 let signup =async (req ,res)=>{
     try{
 
@@ -39,7 +43,7 @@ let signIn = async(req ,res)=>{
     try{
         const { email, password } = req.body;
         if(isstringValid(email) || isstringValid(password)){
-            return res.status(400).json({message: 'EMail idor password is missing ', success: false})
+            return res.status(400).json({message: 'EMail id or password is missing ', success: false})
         }
         console.log(password);
         const user  = await User.findAll({ where : { email }})
@@ -50,7 +54,7 @@ let signIn = async(req ,res)=>{
                 throw new Error('Something went wrong')
                }
                 if(result === true){
-                    return res.status(200).json({success: true, message: "User logged in successfully"})
+                    return res.status(200).json({success: true, message: "User logged in successfully",token :GenerateAccessToken(user[0].id)})
                 }
                 else{
                 return res.status(401).json({success: false, message: 'Password is incorrect'})
