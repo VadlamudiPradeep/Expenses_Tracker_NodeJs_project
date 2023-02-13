@@ -15,7 +15,7 @@ let AddExpenses = async(req ,res)=>{
     if(isstringValid(expenses) || isstringValid(description) || isstringValid(category)){
         throw new Error();
     }
-     await Expenses.create({expenses, description , category}).then((expense)=>{
+     await Expenses.create({expenses, description , category , userId:req.user.id}).then((expense)=>{
         res.status(200).json({expense , success:true, message:'Expenses is add to data base successfully'});
      })
     }
@@ -26,7 +26,7 @@ let AddExpenses = async(req ,res)=>{
 
 let GetExpense = async(req , res)=>{
     try{
-        Expenses.findAll().then(expenses => {
+        Expenses.findAll({where:{userId:req.user.id}}).then(expenses => {
             return res.status(200).json({expenses, success:true})
         });
     }catch(err){
@@ -39,7 +39,7 @@ const DeleteExpense = (req, res) => {
     if(isstringValid(ExpId)){
         return res.status(400).json({success: false, })
     }
-    Expenses.destroy({where: { id: ExpId }}).then((response) => {
+    Expenses.destroy({where: { id: ExpId , userId:req.user.id }}).then((response) => {
     
         return res.status(200).json({response, success: true, message: "Deleted Successfuly"})
     }).catch(err => {
