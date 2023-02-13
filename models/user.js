@@ -1,6 +1,8 @@
 let Sequelize = require('sequelize');
 let sequelize = require('../util/database');
 
+
+
 let User = sequelize.define('user',{
     id:{
         type:Sequelize.INTEGER,
@@ -16,6 +18,7 @@ let User = sequelize.define('user',{
     },
     phone:Sequelize.STRING,
     password:Sequelize.STRING,
+    ispremiumuser: Sequelize.BOOLEAN,
 });
 
 module.exports = User;

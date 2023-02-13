@@ -73,4 +73,5 @@ let signIn = async(req ,res)=>{
 module.exports = {
     signup,
     signIn,
+    GenerateAccessToken,
 }
