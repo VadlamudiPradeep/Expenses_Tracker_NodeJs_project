@@ -10,7 +10,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //models
-
+let userModels  = require('./models/user');
+let expensesModels = require('./models/expenses');
 
 //routes
 let userRoutes = require('./routes/userRoutes');
@@ -19,6 +20,11 @@ let expensesRoutes =  require('./routes/expensesRoutes');
 
 app.use('/user', userRoutes);
 app.use('/expenses' , expensesRoutes);
+
+
+//Asociation 
+userModels.hasMany(expensesModels);
+expensesModels.belongsTo(userModels)
 
 let sequelize = require('./util/database');
 

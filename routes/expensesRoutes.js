@@ -3,10 +3,12 @@ let router = express.Router();
 
 let expensesControllers = require('../controllers/expensesControllers');
 
-router.post('/addExpenses', expensesControllers.AddExpenses);
+let middleware = require('../middleware/auth');
 
-router.get('/getExpenses' , expensesControllers.GetExpense);
+router.post('/addExpenses',middleware.authenticate, expensesControllers.AddExpenses);
 
-router.delete('/deleteExpense/:expenseid',  expensesControllers.DeleteExpense)
+router.get('/getExpenses' ,middleware.authenticate, expensesControllers.GetExpense);
+
+router.delete('/deleteExpense/:expenseid',middleware.authenticate,  expensesControllers.DeleteExpense)
 
 module.exports = router;
