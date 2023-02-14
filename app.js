@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 let userModels  = require('./models/user');
 let expensesModels = require('./models/expenses');
 let ordersModels = require('./models/orders');
+const ForgotPasswordModels = require('./models/forgotPassword');
 
 //routes
 let userRoutes = require('./routes/userRoutes');
@@ -37,6 +38,8 @@ userModels.hasMany(expensesModels);
 expensesModels.belongsTo(userModels);
 userModels.hasMany(ordersModels);
 ordersModels.belongsTo(userModels);
+userModels.hasMany(ForgotPasswordModels);
+ForgotPasswordModels.belongsTo(userModels)
 
 let sequelize = require('./util/database');
 
