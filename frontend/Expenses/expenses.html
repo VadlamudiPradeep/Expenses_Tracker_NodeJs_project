@@ -10,9 +10,9 @@
     <title>Expense Tracker</title>
   </head>
   <body>
-    <button id="premium">Buy Premium</button>
+    
     <h2>Expense Tracker</h2>
-   <main>
+   
         
     <div class="container">
     
@@ -26,7 +26,7 @@
                     <input type="text" id="description" name="description"   placeholder="Description" />
                 
                     <label for="text">Category</label>
-                    <select type="text" list="type" id="category" name="category" placeholder="Select" />
+                    <select type="text" list="type" id="category" name="category" placeholder="Select" >
                     <option value="Movie">Movie </option>
                     <option value="Food Order">Food </option>
                     <option value="Rent">Rent </option>
@@ -36,19 +36,20 @@
                 </div>
                 <button id="addBtn" class="btn">Add Expense</button>
             </form>
-        </div>
-        <ul id="list" class="list"></ul>
-        <div id="message"></div>
-        </div>            
-    </div>
-    <!--LeaderBoard-->
-   <ul id="LeaderBoard"></ul>
-
-    </main>
-  </body>
-     <!-- razorpay -->
+            <div id="message"></div>
+            <button id="premium">Buy Premium</button>
+              <!-- razorpay -->
      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+            <ul id="list" class="list"></ul>
+            
+                <ul id="Leaderboard" class="Leaderboard" style="width:100% ; size:5px ; background-color: orange;" ></ul>
+        </div>
+        </div>            
+    </div>
+ 
+
+   
     <!-- axios -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="./expenses.js"></script>
