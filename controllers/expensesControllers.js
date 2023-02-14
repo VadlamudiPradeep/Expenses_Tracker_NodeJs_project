@@ -1,5 +1,5 @@
 let Expenses = require('../models/expenses');
-
+let User  = require('../models/user');
 
 function isstringValid(string){
     if(string == undefined || string.length === 0){
@@ -16,7 +16,9 @@ let AddExpenses = async(req ,res)=>{
         throw new Error();
     }
      await Expenses.create({expenses, description , category , userId:req.user.id}).then((expense)=>{
-        res.status(200).json({expense , success:true, message:'Expenses is add to data base successfully'});
+        let totalExpenses = Number(req.user.totalExpenses)+Number(expenses);
+          User.update({totalExpenses:totalExpenses},{where:{id:req.user.id}})
+        res.status(200).json({expense:expense , success:true, message:'Expenses is add to data base successfully'});
      })
     }
     catch(err){

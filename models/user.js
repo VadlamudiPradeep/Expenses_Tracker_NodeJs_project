@@ -19,6 +19,10 @@ let User = sequelize.define('user',{
     phone:Sequelize.STRING,
     password:Sequelize.STRING,
     ispremiumuser: Sequelize.BOOLEAN,
+    totalExpenses :{
+        type:Sequelize.STRING,
+        defaultValue:0,
+    }
 });
 
 module.exports = User;
