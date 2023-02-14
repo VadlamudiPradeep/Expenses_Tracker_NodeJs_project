@@ -12,8 +12,8 @@ function isstringValid(string){
     }
 }
 
-function GenerateAccessToken(id){
-    return jwt.sign({userId : id}, 'secretkey')
+function GenerateAccessToken(id, name ,ispremiumuser){
+    return jwt.sign({userId : id , name:name ,ispremiumuser:ispremiumuser}, 'secretkey')
 }
 let signup =async (req ,res)=>{
     try{
@@ -54,7 +54,7 @@ let signIn = async(req ,res)=>{
                 throw new Error('Something went wrong')
                }
                 if(result === true){
-                    return res.status(200).json({success: true, message: "User logged in successfully",token :GenerateAccessToken(user[0].id)})
+                    return res.status(200).json({success: true, message: "User logged in successfully",token :GenerateAccessToken(user[0].id, user[0].name,user[0].ispremiumuser)})
                 }
                 else{
                 return res.status(401).json({success: false, message: 'Password is incorrect'})
