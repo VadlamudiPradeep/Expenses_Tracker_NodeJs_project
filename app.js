@@ -18,6 +18,7 @@ let ordersModels = require('./models/orders');
 let userRoutes = require('./routes/userRoutes');
 let expensesRoutes =  require('./routes/expensesRoutes');
 let purchaseRoutes = require('./routes/purchaseRoutes');
+let premiumFeaturesRoutes = require('./routes/premiumFeaturesRoutes');
 
 const dotenv = require('dotenv');
 
@@ -27,6 +28,7 @@ dotenv.config();
 app.use('/user', userRoutes);
 app.use('/expenses' , expensesRoutes);
 app.use('/purchase',purchaseRoutes);
+app.use('/premium' , premiumFeaturesRoutes);
 
 //Asociation 
 userModels.hasMany(expensesModels);
