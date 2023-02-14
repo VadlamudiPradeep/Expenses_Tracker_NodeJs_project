@@ -19,6 +19,7 @@ let userRoutes = require('./routes/userRoutes');
 let expensesRoutes =  require('./routes/expensesRoutes');
 let purchaseRoutes = require('./routes/purchaseRoutes');
 let premiumFeaturesRoutes = require('./routes/premiumFeaturesRoutes');
+let forgotPasswordRoutes = require('./routes/resetpasswordRoutes')
 
 const dotenv = require('dotenv');
 
@@ -29,6 +30,7 @@ app.use('/user', userRoutes);
 app.use('/expenses' , expensesRoutes);
 app.use('/purchase',purchaseRoutes);
 app.use('/premium' , premiumFeaturesRoutes);
+app.use('/password',forgotPasswordRoutes)
 
 //Asociation 
 userModels.hasMany(expensesModels);
@@ -38,7 +40,9 @@ ordersModels.belongsTo(userModels);
 
 let sequelize = require('./util/database');
 
-sequelize.sync()
+sequelize
+//.sync({force:true})// to create a new table in existed database scema w euse force is to true
+.sync()
 .then(response =>{
     app.listen(3000,()=>{
         console.log('Port is  running on 3000')

@@ -24,7 +24,7 @@ let signup =async (req ,res)=>{
         
         res.status(400).json({err : 'something is missing' , success: false})
     }
-    var salt = await bcrypt.genSalt(10); ;
+    var salt = await bcrypt.genSalt(10); 
 
 bcrypt.hash(password , salt ,async(err,hash)=>{
          User.create({name , email , phone , password:hash })
