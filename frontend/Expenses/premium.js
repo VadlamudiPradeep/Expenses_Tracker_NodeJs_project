@@ -231,3 +231,21 @@ function showLeaderboard(){
 };
 
 // function download 
+
+async function download(){
+try{
+    e.preventDefault();
+  let response = await axios.get('http://localhost:3000/user/download',{headers:{'Authorization':token}})
+const href = URL.createObjectURL(response.data);
+const link  = document.createElement('a');
+link.href = href;
+link.setAttribute('download','expenses.txt');
+link.click()
+document.body.replaceChild(link);
+URL.revokeObjectURL(href);
+console.log(response);
+}
+catch(err){
+    showError();
+}
+}
