@@ -1,0 +1,1 @@
+[{"id":10,"expenses":8000000,"description":"car","category":"Fuel","createdAt":"2023-02-16T06:14:05.000Z","updatedAt":"2023-02-16T06:14:05.000Z","userId":6}]
