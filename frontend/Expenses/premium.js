@@ -87,7 +87,7 @@ function deleteExpense(e, expenseid) {
         const token = localStorage.getItem('token');
     
 
-    axios.delete(`http://localhost:3000/expense/deleteExpense/${expenseid}`,{headers:{'Authorization': token}}).then((response) => {
+    axios.delete(`http://localhost:3000/expenses/deleteExpense/${expenseid}`,{headers:{'Authorization': token}}).then((response) => {
         removeExpensefromUI(expenseid)
         alert(response.data.message)
     })
@@ -234,7 +234,7 @@ function showLeaderboard(){
 // function download 
 
 function download(){
-    let token = localhost.getItem('token');
+  
     axios.get('http://localhost:3000/expenses/download',{headers:{'Aurthorization':token}}).then(response=>{
         const href = URL.createObjectURL(response.data);
         const link = document.createElement('a');
@@ -247,4 +247,101 @@ function download(){
         URL.revokeObjectURL(href);
         console.log(response)
     }).catch(err=>console.log(err))
+}
+
+//Display the List of Expenses
+window.addEventListener('DOMContentLoaded', ()=>{
+    Pagination()
+})
+
+//pagination 
+
+async function Pagination(e){
+let pageNo;
+try{
+pageNo = e.target.id;
+   
+}
+catch(err){
+    pageNo = 1;
+}
+
+let list = document.getElementById('list');
+list.innerHTML ='';
+let get = async()=>await axios.get(`http://localhost:3000/expenses/Pagination/${pageNo}`,{headers:{'Authorization':token}})
+.then(res =>{
+    if(res.data.response === 0 || !res.data.response){
+        return ;
+    }else{
+        res.data.response.map((expenseDetails)=>{
+            let item = document.createElement('li');
+            let span = document.createElement('span');
+            let amount = document.createTextNode(`₹${(expenseDetails.expenses)}`);
+            let description = document.createTextNode(`₹${(expenseDetails.description)}`);
+            let category = document.createTextNode(`₹${(expenseDetails.category)}`);
+             let DeleteButton = document.createElement('button');
+             DeleteButton.className = 'delete-btn';
+             DeleteButton.id = 'delete-btn';
+             DeleteButton.placeholder = 'DeleteButton';
+             DeleteButton.onClick = `deleteExpense(event,${expenseDetails.id})`;
+             item.appendChild(DeleteButton);
+             item.appendChild(amount);
+             item.appendChild(description);
+             item.appendChild(span);
+             item.appendChild(category);
+             list.appendChild(item);
+        });
+
+        var ListOfButton = document.getElementById('Pagination');
+            ListOfButton.innerHTML ='';
+            if(res.data.lastPage === 2){
+                if(res.data.hasPreviousPage){
+                    let ListOfButton1 = document.createElement('button');
+                    ListOfButton1.innerHTML = res.data.previousPage;
+                    ListOfButton1.id = res.data.previousPage;
+                    ListOfButton.appendChild(ListOfButton1);
+                }
+                let button = document.createElement('button');
+                button.innerHTML = res.data.currentPage ;
+                button.id = res.data.nextPage;
+                ListOfButton.appendChild(button);
+
+                if(res.data.hasNextPage){
+                    let button = document.createElement('button');
+                    button.innerHTML = res.data.nextPage;
+                    button.id = res.data.nextPage;
+                    ListOfButton.appendChild(button);
+                }
+            }else if(res.data.lastPage > 2){
+               if(res.data.hasPreviousPage){
+                let button = document.createElement('button');
+                button.innerHTMl = res.data.previousPage;
+                button.id = res.data.previousPage;
+                ListOfButton.appendChild(button);
+               };
+               let button = document.createElement('button');
+               button.innerHTML = res.data.nextPage;
+               button.id = res.data.nextPage;
+               ListOfButton.appendChild(button);
+               if(res.data.hasNextPage){
+                let button=document.createElement('button')
+                button.innerHTML=res.data.nextPage
+                button.id=res.data.nextPage
+                buttonList.appendChild(button)
+            }
+            
+            if(res.data.currentPage !=res.data.lastPage && res.data.nextPage != res.data.lasPage){
+                let button = document.createElement('button');
+                button.innerHTML = res.data.lastPage;
+                button.id = res.data.lastPage;
+                ListOfButton.appendChild(button);
+            }
+        }
+        ListOfButton.addEventListener('click', Pagination);
+        }
+    
+    
+}).catch(err =>{
+    console.log(err)
+})
 }
