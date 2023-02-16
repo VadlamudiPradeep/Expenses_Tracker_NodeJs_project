@@ -19,7 +19,7 @@ let response = await axios.post('http://localhost:3000/user/signIn', loginDetail
         alert(response.data.message);
         localStorage.setItem('token' , response.data.token);
         if(response.data.success === true ){
-            window.location.href = '../Expenses/premium.html';
+            window.location.href = '../Expenses/expenses.html';
         }else{
             throw new Error('Login is failed')
         }

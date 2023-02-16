@@ -15,6 +15,7 @@ async function saveToDB(e) {
         await axios.post('http://localhost:3000/expenses/addExpenses', addExpense , {headers:{'Authorization': token}} ).then(response => {
                 alert(response.data.message)
                 addNewExpensetoUI(response.data.expense);
+              
         })
         
     } catch(err) {
@@ -34,7 +35,7 @@ function parseJwt (token) {
 
 
 
-// DOMContentLoaded
+// // // DOMContentLoaded
 window.addEventListener('DOMContentLoaded',  () => {
     // const token  = localStorage.getItem('token')
     const decodeToken = parseJwt(token)
@@ -49,6 +50,7 @@ window.addEventListener('DOMContentLoaded',  () => {
     
    response.data.expenses.forEach(expense=>{
    addNewExpensetoUI(expense);
+   displayList()
    });
    })
    .catch(err=>{
@@ -241,4 +243,99 @@ function download(){
         URL.revokeObjectURL(href);
         console.log(response)
     }).catch(err=>console.log(err))
+};
+
+
+
+// window.addEventListener('DOMContentLoaded', ()=>{
+//     displayList()
+// })
+
+// Dynamic Pagination
+function displayList(e) {
+    let pageNo;
+    try{
+        pageNo=e.target.id
+    }
+    catch(err){
+        pageNo=1
+    }
+    let listGroup=document.getElementById('list')
+    listGroup.innerHTML=""
+    let getRequest=async()=>await axios({
+        method: 'get',
+        url: `http://localhost:3000/expenses/Pagination/${pageNo}`,
+        headers: {"Authorization" : token }
+    }).then(res=>{
+        console.log(res)
+        if (res.data.response==0 || !res.data.response){
+            // document.querySelector('h3').style.visibility="hidden"
+            return
+        }
+        else{
+            res.data.response.map((expenseDetails)=>{
+            let listItem=document.createElement('li')
+            let span=document.createElement('span')
+            let amountItem=document.createTextNode(`₹${(expenseDetails.expenses)}`)
+            let descItem=document.createTextNode(`${expenseDetails.description}`)
+            let catgItem=document.createTextNode(`${expenseDetails.category}`)
+            let delBtn=document.createElement('button')
+            delBtn.className="delete-btn"
+            delBtn.onclick=`deleteExpense(event, ${expenseDetails.id})`
+            listItem.append(delBtn)
+            listItem.append(amountItem)
+            span.appendChild(descItem)
+            listItem.append(span)
+            listItem.append(catgItem)
+            listGroup.appendChild(listItem)
+        })
+        var buttonList=document.querySelector('.pages-container')
+        buttonList.innerHTML=""
+        
+        if(res.data.lastPage===2){
+            if(res.data.hasPreviousPage){
+                let button=document.createElement('button')
+                button.innerHTML=res.data.previousPage
+                button.id=res.data.previousPage
+                buttonList.appendChild(button)
+            }
+            let button=document.createElement('button')
+            button.innerHTML=res.data.currentPage
+            button.id=res.data.currentPage
+            buttonList.appendChild(button)
+            if(res.data.hasNextPage){
+                let button=document.createElement('button')
+                button.innerHTML=res.data.nextPage
+                button.id=res.data.nextPage
+                buttonList.appendChild(button)
+            }
+        }
+        else if(res.data.lastPage>2){
+            if(res.data.hasPreviousPage){
+                let button=document.createElement('button')
+                button.innerHTML=res.data.previousPage
+                button.id=res.data.previousPage
+                buttonList.appendChild(button)
+            }
+            let button=document.createElement('button')
+            button.innerHTML=res.data.currentPage
+            button.id=res.data.currentPage
+            buttonList.appendChild(button)
+            if(res.data.hasNextPage){
+                let button=document.createElement('button')
+                button.innerHTML=res.data.nextPage
+                button.id=res.data.nextPage
+                buttonList.appendChild(button)
+            }
+            if(res.data.currentPage!=res.data.lastPage && res.data.nextPage!=res.data.lastPage){
+                let button=document.createElement('button')
+                button.innerHTML=res.data.lastPage
+                button.id=res.data.lastPage
+                buttonList.appendChild(button)
+            }
+        }
+        buttonList.addEventListener('click', displayList)
+        }
+    }).catch(err=>console.log(err))
+    getRequest()
 }
