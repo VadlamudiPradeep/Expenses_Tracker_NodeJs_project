@@ -50,7 +50,8 @@ window.addEventListener('DOMContentLoaded',  () => {
     
    response.data.expenses.forEach(expense=>{
    addNewExpensetoUI(expense);
-   displayList()
+   displayList();
+   changePages();
    });
    })
    .catch(err=>{
@@ -338,4 +339,13 @@ function displayList(e) {
         }
     }).catch(err=>console.log(err))
     getRequest()
+}
+
+// Records per page
+function changePages(){
+    let rows = document.getElementById('rows')
+    const val=parseInt(rows.value)
+    axios.get(`http://localhost:3000/expenses/pages/${val}`,{headers:{'Authorization':token}} ).then(response=>{
+        displayList()
+    }).catch(err=>console.log(err))
 }

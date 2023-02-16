@@ -13,6 +13,8 @@ router.delete('/deleteExpense/:expenseid',middleware.authenticate,  expensesCont
 
 router.get('/download', middleware.authenticate,expensesControllers.downloadExpenses);
 
+router.get('/pages/:pages', expensesControllers.updatePages)
+
 router.get('/Pagination/:pageNo', middleware.authenticate,expensesControllers.pagination)
 
 module.exports = router;

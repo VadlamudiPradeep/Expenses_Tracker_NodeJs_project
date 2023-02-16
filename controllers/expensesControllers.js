@@ -85,13 +85,23 @@ const downloadExpenses =  async (req, res) => {
 }
 };
 
+
 // Pagination
-var ItemsPerPage = 2
+var ItemsPerPage = 2;
+
+// Records per page
+const updatePages=(req,res,next)=>{
+    console.log(req.params.pages)
+    ItemsPerPage=parseInt(req.params.pages)
+    res.status(200).send({updated:true})
+}
+
 const pagination = async(req,res)=>{
     let totalExpenses ; 
     let pos = 0;
     let neg = 0;
     let page = +req.params.pageNo || 1;
+    let pageSize = +req.params.PageSize|| 1;
     let Items = Expenses.findAll({where:{userId:req.user.id}})
     .then(response=>{
         totalExpenses = response.length ;
@@ -127,4 +137,5 @@ module.exports = {
     DeleteExpense,
     downloadExpenses,
     pagination,
+    updatePages
 }
