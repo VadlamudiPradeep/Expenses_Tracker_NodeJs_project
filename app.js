@@ -29,6 +29,7 @@ dotenv.config();
 
 app.use('/user', userRoutes);
 app.use('/expenses' , expensesRoutes);
+
 app.use('/purchase',purchaseRoutes);
 app.use('/premium' , premiumFeaturesRoutes);
 app.use('/password',forgotPasswordRoutes)

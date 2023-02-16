@@ -1,3 +1,4 @@
+var token = localStorage.getItem('token');
 async function saveToDB(e) {
     try{
         e.preventDefault();
@@ -10,7 +11,7 @@ async function saveToDB(e) {
         }
         console.log(addExpense);
 
-        var token = localStorage.getItem('token');
+    
         await axios.post('http://localhost:3000/expenses/addExpenses', addExpense , {headers:{'Authorization': token}} ).then(response => {
                 alert(response.data.message)
                 addNewExpensetoUI(response.data.expense);
@@ -35,7 +36,7 @@ function parseJwt (token) {
 
 // DOMContentLoaded
 window.addEventListener('DOMContentLoaded',  () => {
-    const token  = localStorage.getItem('token')
+    // const token  = localStorage.getItem('token')
     const decodeToken = parseJwt(token)
     console.log(decodeToken)
     const ispremiumuser = decodeToken.ispremiumuser
@@ -103,7 +104,7 @@ function removeExpensefromUI(expenseid){
 }
 
 document.getElementById('premium1').onclick = async function (e) {
-    const token = localStorage.getItem('token')
+
     const response  = await axios.get('http://localhost:3000/purchase/premiumMembership', { headers: {"Authorization" : token} });
     console.log(response);
     var options =
@@ -172,7 +173,7 @@ function showLeaderboard(){
 
 
     inputElement.onclick = async() => {
-        const token = localStorage.getItem('token')
+     
         const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showLeaderBoard', { headers: {"Authorization" : token} })
         console.log(userLeaderBoardArray)
     
@@ -232,20 +233,18 @@ function showLeaderboard(){
 
 // function download 
 
-async function download(){
-try{
-    e.preventDefault();
-  let response = await axios.get('http://localhost:3000/user/download',{headers:{'Authorization':token}})
-const href = URL.createObjectURL(response.data);
-const link  = document.createElement('a');
-link.href = href;
-link.setAttribute('download','expenses.txt');
-link.click()
-document.body.replaceChild(link);
-URL.revokeObjectURL(href);
-console.log(response);
-}
-catch(err){
-    showError();
-}
+function download(){
+    let token = localhost.getItem('token');
+    axios.get('http://localhost:3000/expenses/download',{headers:{'Aurthorization':token}}).then(response=>{
+        const href = URL.createObjectURL(response.data);
+        const link = document.createElement('a');
+        link.href = href;
+        link.setAttribute('download', 'expenses.txt'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+        // clean up "a" element & remove ObjectURL
+        document.body.removeChild(link);
+        URL.revokeObjectURL(href);
+        console.log(response)
+    }).catch(err=>console.log(err))
 }

@@ -1,0 +1,38 @@
+files coild be images => image ,videos ,word
+are stroing it the server => 
+disadavantage is tge fikle sore in the laptop itself itself stored in the laptop hard disk or server
+ advantage => whenever you nedd the file you can simply read or send it from your server or hrad disk
+
+
+ when your app start scaling  (number of users have increased)
+ --4gb ram is becomes less when your users are increased , so the server slowing down 
+
+solution for when app is scaling =>
+
+1.vertical scaling => 8gb ram > 16gb ram > 32gb > it will fail at point of time to get at bottle neck 
+2.horizontal scaliing =>buy 2 servers 8gb ram each 
+one req goes to one server and another one req goes to another server this way to laptops would sharing amounges to each other load
+
+    Loadbalancer => it dcied how many users or using and how many requsets are clling the server it basced on that it will but the ram 
+
+server 1 => has all the uptill date 
+server 2 => 
+
+
+server1=>|
+          \
+server2=>  =>    store the files in DFS => Distribute File System => s3 works
+          /
+server3=>|
+
+
+AWS S3 = > sorting files
+
+s3 server is available 99.9999 %
+
+
+AWS 
+- Admin account - root (read , write ,delete),(CTO ,senior manager)
+-IAM roles -> restrict the user to product 1 
+            - dev environment  - DELETE ,read,write,m ,update
+            - prod environment - READ access 
