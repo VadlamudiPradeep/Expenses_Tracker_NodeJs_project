@@ -1,4 +1,4 @@
-const Sib = require('sendinblue-apiv3');
+
 require('dotenv').config();
 const uuid = require('uuid');
 const sgMail = require('@sendgrid/mail');

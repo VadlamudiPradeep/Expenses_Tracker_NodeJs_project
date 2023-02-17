@@ -1,7 +1,7 @@
 let Sequelize = require('sequelize');
 let sequelize = require('../util/database');
 
-
+require('dotenv').config();
 
 let User = sequelize.define('user',{
     id:{
